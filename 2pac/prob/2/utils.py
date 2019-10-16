@@ -27,9 +27,9 @@ def random_multiple_component_graph(rand=True,n=15,e=20,c=2):
 	return g_ret
 
 # Show Graph
-def draw(G,size=7):
+def draw(G, size=4):
     global plot
-    plt.figure(plot,(size,size))
+    plt.figure(plot,(size * 1.50, size))
     pos = nx.spring_layout(G)
     nx.draw_networkx(G,with_labels=True,pos=pos)
     plot += 1
