@@ -1,0 +1,301 @@
+%%Do not alter this block of commands.  If you're proficient at LaTeX, you may include additional packages, create macros, etc. immediately below this block of commands, but make sure to NOT alter the header, margin, and comment settings here. 
+
+\documentclass[12pt]{article}
+\usepackage[margin=1.2in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb,amsfonts, enumitem, fancyhdr, color, comment, graphicx, environ, hyperref}
+\usepackage[utf8]{inputenc} %Package per escriure accents
+
+\pagestyle{fancy}
+\setlength{\headheight}{65pt}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
+
+\theoremstyle{definition}
+\newtheorem{definicio}{Definicio}
+\theoremstyle{definition}
+\newtheorem{prop}{Proposicio}
+\theoremstyle{definition}
+\newtheorem{obs}{Observacio}
+\theoremstyle{definition}
+\newtheorem{propietat}{Propietats}
+\theoremstyle{definition}
+\newtheorem{ex}{Exemple}
+\theoremstyle{definition}
+\newtheorem{teo}{Teorema}
+\theoremstyle{definition}
+\newtheorem{cor}{Corol·lari}
+
+\specialcomment{com}{ \color{blue} \textbf{Comment:} }{\color{black}} %for instructor comments while grading
+\NewEnviron{probscore}{\marginpar{ \color{blue} \tiny Problem Score: \BODY \color{black} }}
+
+\usepackage{listings}
+\usepackage{xcolor}
+ 
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+ 
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+ 
+\lstset{style=mystyle}
+
+\lhead{Marc Jovani}
+\rhead{Algorismica Avançada \\ Tardor 2019}
+
+\title{Resum Algorismica Avançada}
+
+\begin{document}
+
+Resum de teoria de l'assiganatura d'informatica "Algorismica Avançada", basat en les diapositives de teoria penjades al campus.
+
+\section{Introducció}
+
+\subsection{Notació Asimptòtica}
+
+\begin{itemize}
+	\item $O(n)\quad \leq n$
+	\item $\Theta (n) \quad =n$
+	\item $o(n)\quad <n$
+	\item $\Omega(n)\quad \geq n$
+\end{itemize}
+
+\section{Grafs}
+
+\begin{definicio}[\textbf{Graf no dirigit}]
+Un graf no dirigit ens una parella ordenada $\textbf{G=(V,E)}$, on:
+\begin{itemize}
+	\item $\textbf{V}$ conjunt de vertex
+	\item $\textbf{E}\subseteq \{\{x,y\}\mid x,y\in V \wedge x\neq y\}$ conjunt d'arestes
+\end{itemize}
+\end{definicio}
+
+\begin{definicio}[\textbf{Graf dirigit}]
+És igual que un graf no dirigit, però els elements de $E$ són parelles ordenades, $i.e.$ $E\subseteq \{(x,y)\mid x,y\in V \wedge x\neq y\}$.
+\end{definicio}
+
+\begin{definicio}[\textbf{Graf amb pes}]
+Un graf amb pes es un graf on a cada element de $E$ li assignem un valor, que pot representar una distacia o alguna altra cosa.
+\end{definicio}
+
+\begin{obs}
+També podem assignar altres qualitats, com color o text, a les arestes, que no cal que tinguin valor numeric.
+\end{obs}
+
+\subsection{Estructura de Graf}
+Un graf el podem representar de diverses maneres:
+\begin{enumerate}
+	\item Donant una \textbf{llsita linkada} dels seus elements, es a dir donant $V$ i $E$
+	\item Donant una matriu amb les "relacions" entre els vertex del graf, a aqesta matriu li diem \textbf{Matriu d'adjacencia}
+	\item Donant una \textbf{llista d'adjacencia}, donar una llista de $V$ on a cada vertex es diu amb quins altres està conectat i com ho esta amb cada un d'ells.
+\end{enumerate}
+
+\begin{obs}
+Si el graf te pocs vertex, hi ha poques "relacions" entre els diferents vertex, aleshores es poc convenient usar la representació matricial.
+\end{obs}
+
+\begin{obs}
+Si tots els vertex del graf estan continguts en almenys una aresta, aleshores, a $1.$, per donar tots ens seus elements es suficient donar només $E$, les arestes.
+\end{obs}
+
+\subsection{Definicions}
+
+\begin{definicio}[\textbf{Grau d'un vertex}]
+El grau d'un vertex és el nombre de vertex al que esta conectat aquest.
+\end{definicio}
+
+\begin{definicio}[\textbf{Component conexa}]
+Una component conexa $V_1$ és un subconjunt de verterx que estan conectats entre si per arestes.
+
+Això és que $V_1\subseteq V$ i $\forall x,y\in V_1 \quad\exists a_0,\dots,a_n\in E$, amb $a_i=\{z_i,z_{i+1}\}$, on $\forall z_i\in V$ i $z_0=x,z_n+1=y$.
+\end{definicio}
+
+\begin{definicio}[\textbf{Cami}]
+A el conjunt ordenat $\{a_0,\dots,a_n\}\subseteq E$de la definició anterior l'anomenem cami entre $x$ i $y$.
+\end{definicio}
+
+\begin{definicio}[\textbf{Cicle}]
+Un cicle es un cami on $a_0=a_{n+1}$. Es diu que un graf és acíclic si no conte cicles.
+\end{definicio}
+
+\begin{definicio}[\textbf{Graf conex}]
+Diem que un graf és conex quan esta foramt per una única component conexa.
+\end{definicio}
+
+\begin{definicio}[\textbf{Cami d'Euler}]
+És una camí que pasa per totes les arestes del graf només una vegada.
+\end{definicio}
+
+\begin{definicio}[\textbf{Cicle d'Euler}]
+És un camí d'Euler que comença i acaba en el mateix vertex. Si un graf conte un cicle d'Euler s'anomena Eulerian graph.
+\end{definicio}
+
+\begin{definicio}[\textbf{Cami Hamiltonia}]
+És un camí que passa per tots els vertex del graf una vegada.
+\end{definicio}
+
+\begin{definicio}[\textbf{Cicle Hamiltonia}]
+És un camí Hamiltonia que comen'a i acaba en el mateix vertex. Un graf que conte un cicle Hamiltonia s'anomena graf Hamiltonia.
+\end{definicio}
+
+\subsection{Algoritmes sobre Grafs}
+
+\subsubsection{\href{https://en.wikipedia.org/wiki/Depth-first_search}{\color{blue}\underline{DFS}}}
+DFS, Depth-Fisrt Search, és un algoritme per buscar els vertex accessibles
+
+Pseudo-codi per DFS recursiu:
+\lstinputlisting[language=Octave]{DFS.txt}
+
+\newpage
+
+Pseudo-codi per DFS no-recursiu:
+\lstinputlisting[language=Octave]{DFS-iterative.txt}
+
+\textbf{Complexitat (en funció de l'estructura de graf usada):}
+\begin{itemize}
+	\item Llista linkada = $\Theta(|E|^2)$
+	\item Matriu adjacencia = $\Theta(|V|^2)$
+	\item Lista d'adjacencia = $\Theta(|E|)$
+\end{itemize}
+
+\subsubsection{\href{https://en.wikipedia.org/wiki/Breadth-first_search}{\color{blue}\underline{BFS}}}
+BFS, Breath-First Search, és un algoritme per buscar vertex accessibles.
+Al contrari que DFS, aquest es basa en amplada, es a dir, explora tots els vertex d'una "profunditat" abans de pasar a la següent.
+Gracies a això ens permet trobar el camí minim entre dos vertex.
+
+Pseudo-codi:
+\lstinputlisting[language=Octave]{BFS.txt}
+
+\textbf{Complexitat} $O(|V|+|E|)$, si es coneix el nombre de vertex del graf i s'usa una estructura adecuada la complexitat es pot reduir a $O(|V|)$.
+
+\newpage
+
+\subsubsection{\href{http://tiny.cc/6dd7fz}{\color{blue}\underline{Dijktra}}}
+Dijktra és un algoritme per a trobar camins minims entre vertex.
+La diferencia entre Dijktra i BFS és que Dijktra té en conte el pes de cada aresta, mentre que pel contrari BFS no.
+
+Pseudo-codi:
+\lstinputlisting[language=Octave]{Dijktra.txt}
+
+\begin{obs}
+Si només busqeum el camí minim fins a un cert vertex , aleshores despres de la linia 14 si $u$ és l'objectiu ja podem parar l'algorisme i fer el "backtraking".
+\end{obs}
+
+\begin{obs}
+Si en ves de tenir un conjunt $Q$ tenim una cua de preferencia, aleshores a la linia 12 quan haguem de trobar l'element minim no haurem de fer res perque ja estara al principi de la cua. Pero llvors haurem de modificar la prioritat de la cua en cada iteració.
+\end{obs}
+
+\textbf{Complexitat}
+\[
+O(|E|\cdot T_{dk}+|V|\cdot T_{em}),
+\]
+on $T_{dk}$ i $T_{em}$ són les complexitats de $decrease-key$ i de $extract-minimum$ respectivament.
+\begin{itemize}
+	\item Usant una llista linkada = $O(|V|^2)$.
+	\item Usant una cua de prioritats, \href{https://en.wikipedia.org/wiki/Binary_heap}{\color{blue}Binary Heap}, = $O((|V|+|E|)log(|V|))$.
+\end{itemize}
+
+\begin{obs}
+Dijtra troba el camí minim si tots els pesos són no negatius.
+\end{obs}
+
+\subsubsection{\href{https://en.wikipedia.org/wiki/Bellman-Ford_algorithm}{\color{blue}\underline{Bellman-Frod}}}
+Bellman-Ford és un algorsme equivialent a Dijktra que tot i ser menys eficient és més versatil ja que també funciona amb pesos negatius.
+
+Pseudo-codi
+\lstinputlisting[language=Octave]{Bellman-Ford.txt}
+
+\begin{obs}
+Hi ha un problema i és que podem trobar cicles amb cost negatiu.
+\end{obs}
+
+\textbf{Complexitat} $O(|V|\cdot|E|)$.
+
+\newpage
+
+\subsection{\href{https://en.wikipedia.org/wiki/Maximum_flow_problem}{Flux maxim}}
+A teoria de grafs, una xarxa de flux és un graf dirigit que conte un origen, source $S$, i una desmbocadura, sink $T$, entre altres nodes conectats amb edges.
+Cada edge te una capacitat maxima de flux que pot assumir.
+El flux dins la xara ha de complir les següents condicions:
+\begin{itemize}
+	\item $\forall e_i\in E$ amb $e_i\neq S$, $e_i\neq T$, es té que el flux que entra i el que surt són iguals, $i.e.$ $\sum f_{input}=\sum f_{output}$, equivalentment $\sum_{\{u:(u,v)\in E\}} f_{uv}=\sum_{\{w:(v,w)\in E\}} f_{vw}$.
+	\item $\forall e_i\in E$ es té que $0\leq flow(e_i)=|f_{e_i}|\leq Capacity(e_i)$.
+	\item El flux total $|f|$ que surt de $S$ és igual al flux total que arriba a $T$, $i.e.$ $|f| = \sum_{\{v:(S,v)\in E\}} f_{Sv} = \sum_{\{v:(v,T)\in E\}} f_{vT}$.
+	\item El flux entre dos vertex $u$ i $v$, $f(u,v)$ compleix la simetria $f(u,v)=-f(v,u)$.
+\end{itemize}
+
+\begin{definicio}[\textbf{Flux maxim}]
+El flux maxim és la maxima cuantitat de flux que la xarxa pot suportar que pasi desde $S$ fins a $T$, $i.e.$ el maxim $|f|$.
+\end{definicio}
+
+\begin{definicio}[\href{https://en.wikipedia.org/wiki/Cut_(graph_theory)}{\color{blue}\textbf{Tall $s-t$}}]
+Un tall $C=(A,B)$, amb $A,B\subset V$ i $A\cup B=V$, és una partició dels nodes, tal que $S\in A$ i $T\in B$, i amés tenim que $X_C=\{(u,v)\in E\mid u\in A,v\in B\}$.
+I la capacitat del tall és $Capacity(A,B)=\sum_{(u,v)\in X_c} c_{uv}$
+\end{definicio}
+
+\begin{teo}[\href{https://en.wikipedia.org/wiki/Max-flow_min-cut_theorem}{\color{blue}\textbf{max-flow min-cut}}]
+El maxim flux entre $S$ i $T$ és igual a la minima capacitat d'entre tots els els talls que divideixen la xarxa.  
+\end{teo}
+
+\begin{definicio}[\textbf{Xarxa Residual}]
+La xarxa residual consisteix en edges que admeten més flux. Sigui $G=V,E)$ una xaraxa de flux amb inici $S$ i destinacio $T$. Sigui $f$ el seu flux, aleshores doants $u,v\in V$la quantitat de flux addicional que accepte aquesta aresta 'es la seva capacitat residual $c_f(u,v)$, $i.e.$ $c_f(u,v)=c(u,v)-f(u,v)$. 
+\end{definicio}
+
+\subsubsection{\href{https://en.wikipedia.org/wiki/Ford–Fulkerson_algorithm}{\color{blue}Ford-Fulkerson}}
+És un algoritme gready per a trobar el flux maxim d'una xarxa de flux.
+
+Pseudo-codi\footnote{\url{https://www.hackerearth.com/practice/algorithms/graphs/maximum-flow/tutorial/}}:
+\lstinputlisting[language=Octave]{Ford-Fulkerson.txt}
+
+
+\section{Gready}
+
+\section{Complexitat}
+
+\begin{teo}[\href{https://en.wikipedia.org/wiki/Master_theorem_(analysis_of_algorithms)}{\textbf{Master Theorem}}]
+Analisis de la complejidad de algoritmos recursivos.
+
+Siendo $T(n)$ la complejidad del algoritmo, $f(n)$ la complejidad del caso base, $a$ el número de subproblemas a cada nivel de recursión y $b$ el factor por el que dividimos la entrada, denotamos la complejidad de un algoritmo recursivo como:
+
+\[
+T(n) = aT\big(\frac{n}{b}\big)+f(n)
+\]
+
+Si notamos la función $f(x)$ en base a su complejidad de la forma $O(n^d)$ obtenemos:
+
+\[
+T(n) = aT\big(\frac{n}{b}\big)+O(n)
+\]
+
+Y según el teorema masters podemos afirmar que:
+
+\begin{equation*}
+\begin{aligned}
+	& T(n)=O(n^d) \quad & \textrm{if}\: d>log_b a\\
+	& T(n)=O(n^d\log n) \quad & \textrm{if}\: d=log_b a\\
+	& T(n)=O(n^{\log_b{a}}) \quad & \textrm{if}\: d<log_b a
+\end{aligned}
+\end{equation*}
+\end{teo}
+
+\end{document}
