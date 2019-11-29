@@ -16,7 +16,7 @@ def random_objects(infinite=True):
 # Creates random graph (non-tree)
 def random_graph(num_v = 15, num_e = 20):
     graph = nx.generators.gnm_random_graph(num_v,num_e)
-    for edge in G.edges():
+    for edge in graph.edges():
         graph.add_edge(edge[0],edge[1],weight=round(rd.random(),3))
     return graph
 
