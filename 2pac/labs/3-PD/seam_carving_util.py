@@ -30,7 +30,6 @@ def del_path(mat, path):
         dim = [mat.shape[0], mat.shape[1]-1, mat.shape[2]]
         ret = np.zeros(dim).astype('float')
         
-        
         for i in path:
             ret[i[0],:i[1], :] = mat[i[0],:i[1], :]
             ret[i[0],i[1]:, :] = mat[i[0],i[1]+1:, :]
