@@ -2,6 +2,10 @@
 
 ## Organització
 
+### [`/resum.pdf`](https://github.com/tarasyarema/alg2/blob/master/resum.pdf)
+
+La fucking biblia. Res més a dir.
+
 ### [`/teoria`](https://github.com/tarasyarema/alg2/tree/master/teoria)
 
 Resums de teoria, thanks to [marcjovani](https://github.com/M315) que s'aborreix molt i decideix fer resums, xd.
