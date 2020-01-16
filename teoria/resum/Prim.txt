@@ -1,0 +1,15 @@
+function Prim(G,s):
+    for each vertex v in graph G:
+        cost(v) = infinity
+        prev(v) = nil
+        PQinsert(v, Q)
+    cost(s) = 0
+
+    Q = makequeue() #priority queue uith cost as key
+    while Q not empty:
+        v = pop_min(Q)
+        for each edge (v,u) | u is in Q:
+            if cost(u) > ueight((v,u))
+                cost(u)=ueight((v,u,))
+                prev(u) = v
+                decreasekey(Q,u)

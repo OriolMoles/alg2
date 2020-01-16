@@ -67,6 +67,12 @@
 
 \begin{document}
 
+\maketitle
+
+\tableofcontents
+
+\newpage
+
 Resum de teoria de l'assiganatura d'informatica "Algorismica Avançada", basat en les diapositives de teoria penjades al campus.
 
 \section{Introducció}
@@ -233,7 +239,7 @@ Hi ha un problema i és que podem trobar cicles amb cost negatiu.
 
 \newpage
 
-\subsection{\href{https://en.wikipedia.org/wiki/Maximum_flow_problem}{Flux maxim}}
+\subsection{\href{https://en.wikipedia.org/wiki/Maximum_flow_problem}{Flux maxim (s'ha de millorar xd}}
 A teoria de grafs, una xarxa de flux és un graf dirigit que conte un origen, source $S$, i una desmbocadura, sink $T$, entre altres nodes conectats amb edges.
 Cada edge te una capacitat maxima de flux que pot assumir.
 El flux dins la xara ha de complir les següents condicions:
@@ -267,8 +273,131 @@ La xarxa residual consisteix en edges que admeten més flux. Sigui $G=V,E)$ una 
 Pseudo-codi\footnote{\url{https://www.hackerearth.com/practice/algorithms/graphs/maximum-flow/tutorial/}}:
 \lstinputlisting[language=Octave]{Ford-Fulkerson.txt}
 
-
 \section{Gready}
+Un algoritme greedy és un algoritme que segueix la heuristica solucionar problemes a partir de dividir aquests en sub-problemes i trobar les solucions optimes locals a aquests per tal de donar una solució global. En molts problemes l'heuristica greedy no troba el resultat optim del problema.
+
+En general els algoritmes greedy consta de les següents parts
+\begin{itemize}
+	\item Un conjunt de candidats d'on es treura la solució.
+	\item Una funció de selcció que triara el millor candidat i l'afegira a la solució.
+	\item Una funció que determina la validesa del candidat per estar a la solució.
+	\item Una funció que assigna un valor (heuristic) a les solucions parcials.
+	\item Una funció que ens determini si hem arribat a la solució.
+\end{itemize}
+Els algoritmes greedy tenen la propietat que mai reavaluen les sub-solucions que ja han trobat.
+
+\begin{definicio}
+Diem que un problema te una subestructura optima si la seva solució optima conté les solucions optimes dels seus sub-problemes.
+\end{definicio}
+
+\begin{obs}
+Els algoritmes greedy són utils per a solucionar problemes que tenen una subestructura optima.
+\end{obs}
+
+\begin{definicio}
+Un arbre és un graf sense cicles.
+\end{definicio}
+
+\begin{definicio}
+Donat un graf $G$ connex qualsevol, el seu \href{https://en.wikipedia.org/wiki/Minimum_spanning_tree}{\underline{Minimum-spanning-tree}}, $MST$, és l'arbre que té el menor pes possible contenint tots els nodes de $G$.
+\end{definicio}
+
+\begin{obs}
+Notem que el problema de trobar el $MTS$ d'un graf admet una subestructura optima.
+\end{obs}
+
+\subsection{\href{https://tinyurl.com/7ms67ss}{\color{blue}Kruskal}}
+
+És un algoritme que troba el minimum-spanning-tree d'un graf.
+
+\begin{obs}
+Si el graf no és connex aleshores troba el $MST$ per a cada una de les seves compenents connexes.
+\end{obs}
+
+Pseudo-codi
+\lstinputlisting[language=Octave]{Kruskal.txt}
+on
+
+MAKE-SET(v): Crea un singleton amb v.
+
+FIND-SET(v): Troba el conjunt que conté l'element v.
+
+UNION(B,C): Fa la unió dels conujunts B i C.
+
+$\;$
+
+\textbf{Complexitat} $O(E \log{E})$
+
+\subsection{\href{https://tinyurl.com/hxku8vp}{\color{blue}Prim}}
+
+És una alternativa a Kruskal. Però només funciona amb grafs connexos.
+
+Pseudo-codi:
+\lstinputlisting[language=Octave]{Prim.txt}
+
+\textbf{Complexitat} $O(E\log{E})$
+
+\newpage
+
+\section{\href{https://tinyurl.com/vzdm4sq}{Programació dinamica}}
+
+Hi ha dos factors importants en un problema per a poder aplicar programació dinàmica, el problema ha de tenir una subestrucura optima i subproblemes superposats (Overlapping subproblems).
+
+\begin{definicio}[\href{https://tinyurl.com/ruw64sf}{\textbf{Overlapping subproblems}}]
+Es diu que un problema té "subproblemes superposats" si  el problema es pot dividir en subproblemes que són reutilitzats varies vegades o un algoritme recursiu resol el problema resolent sempre el mateix subproblema enves de sempre creantne un de nou.
+\end{definicio}
+
+Donades les dues caracteristiques dels problemes que es poden resoldre amb programació dinamica, la idea d'aquests algortmes és trobar una solució optima de cada subproblema i guradarla per a no haver de tornar a calcular-la en un subproblema futur en que la requereixi. Això té un cost computacional ja que augmenta considerablement la memoria necesaria per a solucionar el problema (la complexitat espacial), però redueix la complexitat temporal.
+
+\subsection{\href{https://tinyurl.com/wey838c}{Exemples}}
+Alguns problemes que es podene solucionar usant programació dinamica:
+
+\begin{itemize}
+	\item Fibonacci
+	\item Hanoi Towers
+	\item knapsack problem
+\end{itemize}
+
+En particular l'algoritme de Floyd-Warshall és un algoritme per a trobar el cami minim entre dos nodes d'un graf amb pesos positius o negatius (sense cilces negatius), el qual és util per a grafs densos.
+
+\lstinputlisting[language=Octave]{Floyd-Warshall.txt}
+Té complexitat $O(|V|^3)$.
+
+\newpage
+
+\section{\href{https://en.wikipedia.org/wiki/Enumeration_algorithm}{Enumeratius}}
+
+Els algoritmes enumeratius són aquells que s'apliquen a problemes tals que donat un input l'algoritme retorna una llista amb totes les solucions, no duplicades.
+
+ELs algoritmes enumeratius es separent en 3 tipus principals:
+
+\begin{itemize}
+	\item Recorregut vs. Cerca
+	\item Backtracking
+	\item Ramificació i poda
+\end{itemize}
+
+\subsection{\href{https://en.wikipedia.org/wiki/Backtracking}{Backtracking}}
+
+Són algoritmes que busquen totes, o algunes, solucions d'un problema afegint constantment candidats a la solució, i descartant cada possible candidat ("backtrack") quan determini que aquest no és una possible solució del problema.
+
+\subsubsection{Exemples}
+\begin{itemize}
+	\item Map coloring
+	\item 8 queens
+	\item Sudoku
+\end{itemize}
+
+\subsection{\href{https://en.wikipedia.org/wiki/Branch_and_bound}{Ramificació i poda}}
+
+Donat un problema considerem l'espai de les possibles solucions, aleshores en cada pas generem dos o més casos per cada element de l'espai (branch/ramificació), i calculem una cota/bound de cada un d'aquests, i si aquesta cota no és satisfactoria es considera que no pot ser solució i s'elimina (poda), de manera que no es segueix ramificant aquest candidad.
+
+Les cotes normalment es calculen usant funcions heuristiques, que donen una aproximació de si un candidat pot o no ser solució sense solucionar el problema, amb un cost molt menor que comprovant-ho ralment com es fa en el cas de backtracking.
+
+Els algoritmes de ramificació i poda són utils per a "resoldre" problemes NP-hard, com el Traveling salesman problem o el 0/1 knapsack problem.
+
+
+\newpage
 
 \section{Complexitat}
 
